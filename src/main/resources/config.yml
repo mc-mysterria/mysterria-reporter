@@ -1,0 +1,31 @@
+# MysterriaReporter Configuration
+
+cache:
+  # How long to cache individual player pathway data (in minutes)
+  # Set to 0 to disable caching for single player queries
+  player-ttl: 5
+
+  # How long to cache the everyone/bulk pathway data (in minutes)
+  # Set to 0 to disable caching for bulk queries
+  everyone-ttl: 10
+
+  # How often to refresh the everyone cache in the background (in minutes)
+  # This ensures the bulk data is always relatively fresh
+  # Set to 0 to disable automatic refresh
+  refresh-interval: 15
+
+  # Maximum number of individual player entries to cache
+  # Prevents memory issues on large servers
+  max-player-entries: 1000
+
+endpoints:
+  # Enable or disable specific endpoints
+  player-pathway: true
+  everyone-pathway: true
+
+logging:
+  # Log cache hit/miss for debugging
+  debug-cache: false
+
+  # Log when cache refresh tasks run
+  debug-refresh: false

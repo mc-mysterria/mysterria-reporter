@@ -1,0 +1,20 @@
+name: MysterriaReporter
+version: '${version}'
+main: net.mysterria.reporter.MysterriaReporter
+api-version: '1.21'
+authors: [ Mysterria ]
+description: "Automated report system for obtaining meta-data"
+website: "https://mysterria.net"
+depend: [ CatWalk, CircleOfImagination ]
+
+commands:
+  reporter:
+    description: Manage MysterriaReporter cache
+    usage: /reporter <refresh|clear|stats|reload>
+    permission: mysterriareporter.cache
+    aliases: [ mr, pathwaycache ]
+
+permissions:
+  mysterriareporter.cache:
+    description: Allows managing the pathway cache
+    default: op
