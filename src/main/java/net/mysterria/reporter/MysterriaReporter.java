@@ -5,6 +5,9 @@ import dev.ua.ikeepcalm.coi.api.CircleOfImaginationAPI;
 import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.mysterria.reporter.api.ArtifactEndpoint;
+import net.mysterria.reporter.api.BeyonderDataEndpoint;
+import net.mysterria.reporter.api.BeyonderLogsEndpoint;
 import net.mysterria.reporter.api.EveryonePathwayEndpoint;
 import net.mysterria.reporter.api.PlayerPathwayEndpoint;
 import net.mysterria.reporter.command.CacheCommand;
@@ -66,6 +69,21 @@ public class MysterriaReporter extends JavaPlugin {
         if (getConfig().getBoolean("endpoints.everyone-pathway", true)) {
             webserverService.registerHandlers(new EveryonePathwayEndpoint(cacheManager));
             log("Registered EveryonePathwayEndpoint at /pathway/everyone");
+        }
+
+        if (getConfig().getBoolean("endpoints.beyonder-data", true)) {
+            webserverService.registerHandlers(new BeyonderDataEndpoint());
+            log("Registered BeyonderDataEndpoint at /beyonder/{player}");
+        }
+
+        if (getConfig().getBoolean("endpoints.beyonder-logs", true)) {
+            webserverService.registerHandlers(new BeyonderLogsEndpoint());
+            log("Registered BeyonderLogsEndpoint at /beyonder/logs/{player}/{amount}");
+        }
+
+        if (getConfig().getBoolean("endpoints.artifact", true)) {
+            webserverService.registerHandlers(new ArtifactEndpoint());
+            log("Registered ArtifactEndpoint at /artifact/{id}");
         }
     }
 

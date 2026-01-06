@@ -22,6 +22,9 @@ endpoints:
   # Enable or disable specific endpoints
   player-pathway: true
   everyone-pathway: true
+  beyonder-data: true
+  beyonder-logs: true
+  artifact: true
 
 logging:
   # Log cache hit/miss for debugging
