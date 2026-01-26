@@ -1,4 +1,4 @@
-package net.mysterria.reporter.model;
+package net.mysterria.reporter.model.response;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

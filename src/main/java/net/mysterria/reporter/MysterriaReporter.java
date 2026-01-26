@@ -8,8 +8,10 @@ import net.kyori.adventure.text.format.NamedTextColor;
 import net.mysterria.reporter.api.ArtifactEndpoint;
 import net.mysterria.reporter.api.BeyonderDataEndpoint;
 import net.mysterria.reporter.api.BeyonderLogsEndpoint;
+import net.mysterria.reporter.api.BlessEndpoint;
 import net.mysterria.reporter.api.EveryonePathwayEndpoint;
 import net.mysterria.reporter.api.PlayerPathwayEndpoint;
+import net.mysterria.reporter.api.RebirthEndpoint;
 import net.mysterria.reporter.command.CacheCommand;
 import net.mysterria.reporter.manager.PathwayCacheManager;
 import org.bukkit.Bukkit;
@@ -84,6 +86,16 @@ public class MysterriaReporter extends JavaPlugin {
         if (getConfig().getBoolean("endpoints.artifact", true)) {
             webserverService.registerHandlers(new ArtifactEndpoint());
             log("Registered ArtifactEndpoint at /artifact/{id}");
+        }
+
+        if (getConfig().getBoolean("endpoints.bless", true)) {
+            webserverService.registerHandlers(new BlessEndpoint(coiAPI));
+            log("Registered BlessEndpoint at POST /bless");
+        }
+
+        if (getConfig().getBoolean("endpoints.rebirth", true)) {
+            webserverService.registerHandlers(new RebirthEndpoint(coiAPI));
+            log("Registered RebirthEndpoint at POST /rebirth");
         }
     }
 

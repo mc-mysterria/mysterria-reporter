@@ -25,6 +25,8 @@ endpoints:
   beyonder-data: true
   beyonder-logs: true
   artifact: true
+  bless: true
+  rebirth: true
 
 logging:
   # Log cache hit/miss for debugging

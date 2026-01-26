@@ -5,7 +5,7 @@ import dev.ua.ikeepcalm.catwalk.bridge.annotations.BridgePathParam;
 import dev.ua.ikeepcalm.catwalk.bridge.source.BridgeApiResponse;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
-import net.mysterria.reporter.model.ArtifactResponse;
+import net.mysterria.reporter.model.response.ArtifactResponse;
 import net.mysterria.reporter.util.FileReaderUtil;
 
 public class ArtifactEndpoint {

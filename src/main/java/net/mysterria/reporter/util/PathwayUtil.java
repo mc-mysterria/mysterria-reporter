@@ -3,7 +3,7 @@ package net.mysterria.reporter.util;
 import dev.ua.ikeepcalm.coi.api.CircleOfImaginationAPI;
 import dev.ua.ikeepcalm.coi.api.model.BeyonderData;
 import dev.ua.ikeepcalm.coi.api.model.PathwayData;
-import net.mysterria.reporter.model.PlayerPathwayResponse;
+import net.mysterria.reporter.model.response.PlayerPathwayResponse;
 import org.bukkit.Bukkit;
 
 import java.util.Map;

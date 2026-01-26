@@ -20,7 +20,7 @@ repositories {
 
 dependencies {
     compileOnly("io.javalin:javalin-bundle:6.6.0")
-    compileOnly("dev.ua.ikeepcalm:circle-of-imagination-api:1.3.2-SNAPSHOT")
+    compileOnly("dev.ua.ikeepcalm:circle-of-imagination-api:1.3.4-SNAPSHOT")
     compileOnly 'io.swagger.core.v3:swagger-annotations:2.2.21'
     compileOnly("io.javalin.community.openapi:javalin-openapi-plugin:6.6.0")
     compileOnly("io.javalin.community.openapi:javalin-swagger-plugin:6.6.0")

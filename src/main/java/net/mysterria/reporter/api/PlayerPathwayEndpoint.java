@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.catwalk.bridge.source.BridgeApiResponse;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
 import net.mysterria.reporter.manager.PathwayCacheManager;
-import net.mysterria.reporter.model.PlayerPathwayResponse;
+import net.mysterria.reporter.model.response.PlayerPathwayResponse;
 
 public class PlayerPathwayEndpoint {
 

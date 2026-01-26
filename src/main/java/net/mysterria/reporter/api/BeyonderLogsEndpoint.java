@@ -6,7 +6,7 @@ import dev.ua.ikeepcalm.catwalk.bridge.source.BridgeApiResponse;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
 import net.mysterria.reporter.MysterriaReporter;
-import net.mysterria.reporter.model.BeyonderLogsResponse;
+import net.mysterria.reporter.model.response.BeyonderLogsResponse;
 import net.mysterria.reporter.util.FileReaderUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
