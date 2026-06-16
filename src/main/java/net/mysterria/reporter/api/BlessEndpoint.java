@@ -32,7 +32,7 @@ public class BlessEndpoint {
             description = "Create a Beyonder for an online or offline player. Requires UUID, player name, pathway, sequence, and optional spirituality/acting boosts.",
             tags = {"Reporter"}
     )
-    @BridgeEventHandler(requiresAuth = false, description = "Bless a player by creating Beyonder", logRequests = true)
+    @BridgeEventHandler(description = "Bless a player by creating Beyonder", logRequests = true)
     public BridgeApiResponse<BlessResponse> blessPlayer(@BridgeRequestBody BlessRequest request) {
         try {
             // Validate required parameters

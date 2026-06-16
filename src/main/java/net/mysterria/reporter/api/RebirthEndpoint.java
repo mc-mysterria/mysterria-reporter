@@ -32,7 +32,7 @@ public class RebirthEndpoint {
             description = "Destroy Beyonder status for an online or offline player. Requires UUID and player name.",
             tags = {"Reporter"}
     )
-    @BridgeEventHandler(requiresAuth = false, description = "Rebirth a player by destroying Beyonder", logRequests = true)
+    @BridgeEventHandler(description = "Rebirth a player by destroying Beyonder", logRequests = true)
     public BridgeApiResponse<RebirthResponse> rebirthPlayer(@BridgeRequestBody RebirthRequest request) {
         try {
             // Validate required parameters

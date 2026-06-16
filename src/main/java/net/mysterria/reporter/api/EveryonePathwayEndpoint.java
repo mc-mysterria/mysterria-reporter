@@ -22,7 +22,7 @@ public class EveryonePathwayEndpoint {
             description = "Reports pathway, sequence and acting progress for all beyonders",
             tags = {"Reporter"}
     )
-    @BridgeEventHandler(requiresAuth = false, description = "Get all beyonders primary pathways", logRequests = true)
+    @BridgeEventHandler(description = "Get all beyonders primary pathways", logRequests = true)
     public BridgeApiResponse<EveryonePathwayResponse> getEveryonePathway() {
         EveryonePathwayResponse response = cacheManager.getEveryonePathways();
         return BridgeApiResponse.success(response);

@@ -112,7 +112,7 @@ public class PathwayCacheManager {
                 everyoneCache = loadEveryoneCache();
                 if (debugRefresh) {
                     PathwayUtil.logDebug("Everyone cache refreshed successfully - " +
-                                         everyoneCache.getAmount() + " beyonders loaded");
+                            everyoneCache.getAmount() + " beyonders loaded");
                 }
             } catch (Exception e) {
                 plugin.getLogger().severe("Error refreshing everyone cache: " + e.getMessage());
@@ -132,8 +132,10 @@ public class PathwayCacheManager {
             if (coiAPI.isBeyonder(playerName)) {
                 PlayerPathwayResponse playerData = PathwayUtil.getPlayerPathwayData(playerName, coiAPI);
                 if (playerData.getBeyonder()) {
-                    beyonders.add(playerData);
-                    playerCache.put(playerName, playerData);
+                    if (!beyonders.contains(playerData)) {
+                        beyonders.add(playerData);
+                        playerCache.put(playerName, playerData);
+                    }
                 }
             }
         }

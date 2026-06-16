@@ -23,7 +23,7 @@ public class PlayerPathwayEndpoint {
             description = "Reports player pathway, sequence and acting progress by player name",
             tags = {"Reporter"}
     )
-    @BridgeEventHandler(requiresAuth = false, description = "Get player's primary pathway", logRequests = true)
+    @BridgeEventHandler(description = "Get player's primary pathway", logRequests = true)
     public BridgeApiResponse<PlayerPathwayResponse> getPathway(@BridgePathParam("player") String playerName) {
         PlayerPathwayResponse response = cacheManager.getPlayerPathway(playerName);
         return BridgeApiResponse.success(response);
