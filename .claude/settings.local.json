@@ -2,7 +2,11 @@
   "permissions": {
     "allow": [
       "Bash(dir \"Q:\\Mysterria\\MysterriaDelivery\\src\\main\")",
-      "Bash(./gradlew clean:*)"
+      "Bash(./gradlew clean:*)",
+      "Bash(xargs grep -L \"pathParams\")",
+      "Bash(xargs grep -l \"OpenApi\\(\")",
+      "Bash(./gradlew compileJava --stacktrace)",
+      "WebFetch(domain:search.maven.org)"
     ],
     "deny": [],
     "ask": []

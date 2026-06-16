@@ -24,8 +24,8 @@ public class PlayerPathwayEndpoint {
             tags = {"Reporter"}
     )
     @BridgeEventHandler(description = "Get player's primary pathway", logRequests = true)
-    public BridgeApiResponse<PlayerPathwayResponse> getPathway(@BridgePathParam("player") String playerName) {
-        PlayerPathwayResponse response = cacheManager.getPlayerPathway(playerName);
+    public BridgeApiResponse<PlayerPathwayResponse> getPathway(@BridgePathParam("player") String player) {
+        PlayerPathwayResponse response = cacheManager.getPlayerPathway(player);
         return BridgeApiResponse.success(response);
     }
 }

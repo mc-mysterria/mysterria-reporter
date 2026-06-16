@@ -18,22 +18,22 @@ public class ArtifactEndpoint {
             tags = {"Reporter"}
     )
     @BridgeEventHandler(description = "Get artifact's raw data file", logRequests = true)
-    public BridgeApiResponse<ArtifactResponse> getArtifactData(@BridgePathParam("id") String artifactId) {
-        String sanitizedId = FileReaderUtil.sanitizeArtifactId(artifactId);
+    public BridgeApiResponse<ArtifactResponse> getArtifactData(@BridgePathParam("id") String id) {
+        String sanitizedId = FileReaderUtil.sanitizeArtifactId(id);
         String filePath = "plugins/CircleOfImagination/artifacts/" + sanitizedId + ".yml";
 
         String fileContent = FileReaderUtil.readYamlFile(filePath);
 
         if (fileContent == null) {
             return BridgeApiResponse.success(ArtifactResponse.builder()
-                    .artifactId(artifactId)
+                    .artifactId(id)
                     .data(null)
                     .found(false)
                     .build());
         }
 
         return BridgeApiResponse.success(ArtifactResponse.builder()
-                .artifactId(artifactId)
+                .artifactId(id)
                 .data(fileContent)
                 .found(true)
                 .build());

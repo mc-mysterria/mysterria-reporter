@@ -18,22 +18,22 @@ public class BeyonderDataEndpoint {
             tags = {"Reporter"}
     )
     @BridgeEventHandler(description = "Get beyonder's raw data file", logRequests = true)
-    public BridgeApiResponse<BeyonderDataResponse> getBeyonderData(@BridgePathParam("player") String playerName) {
-        String sanitizedName = FileReaderUtil.sanitizePlayerName(playerName);
+    public BridgeApiResponse<BeyonderDataResponse> getBeyonderData(@BridgePathParam("player") String player) {
+        String sanitizedName = FileReaderUtil.sanitizePlayerName(player);
         String filePath = "plugins/CircleOfImagination/data/beyonders/" + sanitizedName + ".yml";
 
         String fileContent = FileReaderUtil.readYamlFile(filePath);
 
         if (fileContent == null) {
             return BridgeApiResponse.success(BeyonderDataResponse.builder()
-                    .player(playerName)
+                    .player(player)
                     .data(null)
                     .found(false)
                     .build());
         }
 
         return BridgeApiResponse.success(BeyonderDataResponse.builder()
-                .player(playerName)
+                .player(player)
                 .data(fileContent)
                 .found(true)
                 .build());

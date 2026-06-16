@@ -25,20 +25,20 @@ public class BeyonderLogsEndpoint {
     )
     @BridgeEventHandler(description = "Get beyonder's activity logs", logRequests = true)
     public BridgeApiResponse<BeyonderLogsResponse> getBeyonderLogs(
-            @BridgePathParam("player") String playerName,
-            @BridgePathParam("amount") String amountStr) {
+            @BridgePathParam("player") String player,
+            @BridgePathParam("amount") String amount) {
 
-        String sanitizedName = FileReaderUtil.sanitizePlayerName(playerName);
-        int amount;
+        String sanitizedName = FileReaderUtil.sanitizePlayerName(player);
+        int amountInt;
 
         try {
-            amount = Integer.parseInt(amountStr);
-            if (amount <= 0 || amount > 10000) {
-                amount = Math.min(Math.max(amount, 1), 10000);
+            amountInt = Integer.parseInt(amount);
+            if (amountInt <= 0 || amountInt > 10000) {
+                amountInt = Math.clamp(amountInt, 1, 10000);
             }
         } catch (NumberFormatException e) {
             return BridgeApiResponse.success(BeyonderLogsResponse.builder()
-                    .player(playerName)
+                    .player(player)
                     .requested(0)
                     .returned(0)
                     .logs(Collections.emptyList())
@@ -55,11 +55,11 @@ public class BeyonderLogsEndpoint {
         }.runTask(MysterriaReporter.getInstance());
 
         String filePath = "plugins/CircleOfImagination/logs/" + sanitizedName + ".log";
-        List<String> logLines = FileReaderUtil.readLastLines(filePath, amount);
+        List<String> logLines = FileReaderUtil.readLastLines(filePath, amountInt);
 
         return BridgeApiResponse.success(BeyonderLogsResponse.builder()
-                .player(playerName)
-                .requested(amount)
+                .player(player)
+                .requested(amountInt)
                 .returned(logLines.size())
                 .logs(logLines)
                 .found(!logLines.isEmpty())
