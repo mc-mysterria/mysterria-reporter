@@ -6,6 +6,7 @@ import lombok.Getter;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.mysterria.reporter.api.ArtifactEndpoint;
+import net.mysterria.reporter.api.BalanceReportEndpoint;
 import net.mysterria.reporter.api.BeyonderDataEndpoint;
 import net.mysterria.reporter.api.BeyonderLogsEndpoint;
 import net.mysterria.reporter.api.BlessEndpoint;
@@ -86,6 +87,11 @@ public class MysterriaReporter extends JavaPlugin {
         if (getConfig().getBoolean("endpoints.artifact", true)) {
             webserverService.registerHandlers(new ArtifactEndpoint());
             log("Registered ArtifactEndpoint at /artifact/{id}");
+        }
+
+        if (getConfig().getBoolean("endpoints.balance-report", true)) {
+            webserverService.registerHandlers(new BalanceReportEndpoint());
+            log("Registered BalanceReportEndpoint at /balance/report");
         }
 
         if (getConfig().getBoolean("endpoints.bless", true)) {

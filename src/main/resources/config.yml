@@ -25,6 +25,7 @@ endpoints:
   beyonder-data: true
   beyonder-logs: true
   artifact: true
+  balance-report: true
   bless: true
   rebirth: true
 
