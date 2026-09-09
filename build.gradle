@@ -1,6 +1,18 @@
 plugins {
     id 'java'
+    id 'com.gradleup.shadow' version '9.4.1'
 }
+
+// These are private implementation dependencies, not supplied by the Paper API.
+tasks.jar { enabled = false }
+tasks.shadowJar {
+    archiveClassifier.set('')
+    relocate 'com.github.benmanes.caffeine', 'net.mysterria.reporter.libs.caffeine'
+    relocate 'com.google.gson', 'net.mysterria.reporter.libs.gson'
+    relocate 'org.yaml.snakeyaml', 'net.mysterria.reporter.libs.yaml'
+    mergeServiceFiles()
+}
+tasks.build { dependsOn tasks.shadowJar }
 
 group = 'net.mysterria'
 version = '1.0.0'
@@ -21,7 +33,14 @@ repositories {
 dependencies {
     compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
     compileOnly("io.javalin:javalin-bundle:6.6.0")
-    compileOnly("dev.ua.ikeepcalm:circle-of-imagination-api:1.4.0-SNAPSHOT")
+    def coiApiJar = providers.gradleProperty('coiApiJar')
+    if (coiApiJar.isPresent()) {
+        def apiFile = file(coiApiJar.get())
+        if (!apiFile.isFile()) throw new GradleException('COI API override is not a file')
+        compileOnly files(apiFile)
+    } else {
+        compileOnly("dev.ua.ikeepcalm:circle-of-imagination-api:1.4.0-SNAPSHOT")
+    }
     compileOnly 'io.swagger.core.v3:swagger-annotations:2.2.21'
     compileOnly("io.javalin.community.openapi:javalin-openapi-plugin:6.6.0")
     compileOnly("io.javalin.community.openapi:javalin-swagger-plugin:6.6.0")
