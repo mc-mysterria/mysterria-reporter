@@ -130,6 +130,9 @@ Both must be present and enabled or plugin disables itself.
 Always go through `PathwayUtil` utility methods or `PathwayCacheManager` to leverage caching. Direct API access bypasses cache.
 
 ### Async Operations
+
+- Activity history is intentionally uncached: its endpoint calls COI's asynchronous owning-worker
+  reader rather than issuing a flush command and opening the file independently. See docs/ACTIVITY_HISTORY.md.
 - Everyone cache refresh uses `CompletableFuture.runAsync()`
 - Background tasks use `Bukkit.getScheduler().runTaskTimerAsynchronously()`
 - Never block main thread for cache operations

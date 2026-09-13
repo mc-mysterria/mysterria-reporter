@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.catwalk.bridge.annotations.BridgePathParam;
 import dev.ua.ikeepcalm.catwalk.bridge.source.BridgeApiResponse;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
+import io.javalin.openapi.OpenApiParam;
 import net.mysterria.reporter.model.response.BeyonderDataResponse;
 import net.mysterria.reporter.util.FileReaderUtil;
 
@@ -15,7 +16,8 @@ public class BeyonderDataEndpoint {
             methods = HttpMethod.GET,
             summary = "Get beyonder data file",
             description = "Returns the raw YAML data file for a beyonder player",
-            tags = {"Reporter"}
+            tags = {"Reporter"},
+            pathParams = {@OpenApiParam(name = "player", type = String.class, description = "Minecraft player name", required = true)}
     )
     @BridgeEventHandler(description = "Get beyonder's raw data file", logRequests = true)
     public BridgeApiResponse<BeyonderDataResponse> getBeyonderData(@BridgePathParam("player") String player) {
@@ -39,3 +41,4 @@ public class BeyonderDataEndpoint {
                 .build());
     }
 }
+
