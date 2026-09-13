@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.catwalk.bridge.annotations.BridgePathParam;
 import dev.ua.ikeepcalm.catwalk.bridge.source.BridgeApiResponse;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
+import io.javalin.openapi.OpenApiParam;
 import net.mysterria.reporter.manager.PathwayCacheManager;
 import net.mysterria.reporter.model.response.PlayerPathwayResponse;
 
@@ -21,7 +22,8 @@ public class PlayerPathwayEndpoint {
             methods = HttpMethod.GET,
             summary = "Get player pathway",
             description = "Reports player pathway, sequence and acting progress by player name",
-            tags = {"Reporter"}
+            tags = {"Reporter"},
+            pathParams = {@OpenApiParam(name = "player", type = String.class, description = "Minecraft player name", required = true)}
     )
     @BridgeEventHandler(description = "Get player's primary pathway", logRequests = true)
     public BridgeApiResponse<PlayerPathwayResponse> getPathway(@BridgePathParam("player") String player) {
@@ -29,3 +31,4 @@ public class PlayerPathwayEndpoint {
         return BridgeApiResponse.success(response);
     }
 }
+

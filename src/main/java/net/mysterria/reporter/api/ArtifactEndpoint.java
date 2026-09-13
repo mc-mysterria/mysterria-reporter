@@ -5,6 +5,7 @@ import dev.ua.ikeepcalm.catwalk.bridge.annotations.BridgePathParam;
 import dev.ua.ikeepcalm.catwalk.bridge.source.BridgeApiResponse;
 import io.javalin.openapi.HttpMethod;
 import io.javalin.openapi.OpenApi;
+import io.javalin.openapi.OpenApiParam;
 import net.mysterria.reporter.model.response.ArtifactResponse;
 import net.mysterria.reporter.util.FileReaderUtil;
 
@@ -15,7 +16,8 @@ public class ArtifactEndpoint {
             methods = HttpMethod.GET,
             summary = "Get artifact data file",
             description = "Returns the raw YAML data file for an artifact by its ID",
-            tags = {"Reporter"}
+            tags = {"Reporter"},
+            pathParams = {@OpenApiParam(name = "id", type = String.class, description = "Artifact identifier", required = true)}
     )
     @BridgeEventHandler(description = "Get artifact's raw data file", logRequests = true)
     public BridgeApiResponse<ArtifactResponse> getArtifactData(@BridgePathParam("id") String id) {
@@ -39,3 +41,4 @@ public class ArtifactEndpoint {
                 .build());
     }
 }
+

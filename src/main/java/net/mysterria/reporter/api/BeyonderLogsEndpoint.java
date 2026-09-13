@@ -14,7 +14,11 @@ import java.util.concurrent.TimeUnit;
 
 public class BeyonderLogsEndpoint {
     @OpenApi(path = "/beyonder/logs/{player}/{amount}", methods = HttpMethod.GET,
-            summary = "Get beyonder activity logs", tags = {"Reporter"})
+            summary = "Get beyonder activity logs", tags = {"Reporter"},
+            pathParams = {
+                    @OpenApiParam(name = "player", type = String.class, description = "Minecraft player name", required = true),
+                    @OpenApiParam(name = "amount", type = String.class, description = "Maximum rows to return", required = true)
+            })
     @BridgeEventHandler(requiresAuth = true, description = "Get beyonder's activity logs", logRequests = true)
     public CompletableFuture<BridgeApiResponse<BeyonderLogsResponse>> getBeyonderLogs(
             @BridgePathParam("player") String player, @BridgePathParam("amount") String amount) {
@@ -51,3 +55,4 @@ public class BeyonderLogsEndpoint {
                 .returned(lines.size()).logs(lines).found(!lines.isEmpty()).build());
     }
 }
+
