@@ -10,11 +10,14 @@ import net.mysterria.reporter.api.BalanceReportEndpoint;
 import net.mysterria.reporter.api.BeyonderDataEndpoint;
 import net.mysterria.reporter.api.BeyonderLogsEndpoint;
 import net.mysterria.reporter.api.BlessEndpoint;
+import net.mysterria.reporter.api.CoiActivityReaderSource;
+import net.mysterria.reporter.api.CoiActivityReaderWatcher;
 import net.mysterria.reporter.api.EveryonePathwayEndpoint;
 import net.mysterria.reporter.api.PlayerPathwayEndpoint;
 import net.mysterria.reporter.api.RebirthEndpoint;
 import net.mysterria.reporter.command.CacheCommand;
 import net.mysterria.reporter.manager.PathwayCacheManager;
+import net.mysterria.reporter.util.FileReaderUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
@@ -35,6 +38,7 @@ public class MysterriaReporter extends JavaPlugin {
         log("Loading Mysterria Reporter...");
 
         saveDefaultConfig();
+        FileReaderUtil.init(getLogger());
 
         enableCoiApi();
 
@@ -80,7 +84,10 @@ public class MysterriaReporter extends JavaPlugin {
         }
 
         if (getConfig().getBoolean("endpoints.beyonder-logs", true)) {
-            webserverService.registerHandlers(new BeyonderLogsEndpoint());
+            CoiActivityReaderSource activitySource = new CoiActivityReaderSource();
+            activitySource.refresh();
+            getServer().getPluginManager().registerEvents(new CoiActivityReaderWatcher(activitySource), this);
+            webserverService.registerHandlers(new BeyonderLogsEndpoint(activitySource, getLogger()));
             log("Registered BeyonderLogsEndpoint at /beyonder/logs/{player}/{amount}");
         }
 
