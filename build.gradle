@@ -3,55 +3,38 @@ plugins {
 }
 
 group = 'net.mysterria'
-version = '1.0.0'
+version = '1.1.0'
 
 repositories {
+    mavenLocal()
     mavenCentral()
-
     maven {
         url = "https://repo.papermc.io/repository/maven-public/"
     }
-
-    maven { url 'https://jitpack.io' }
     maven {
         url = "https://nexus.mysterria.net/repository/plugin-public/"
     }
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:26.1.2.build.+")
-    compileOnly("io.javalin:javalin-bundle:6.6.0")
-    compileOnly("dev.ua.ikeepcalm:circle-of-imagination-api:1.4.0-SNAPSHOT")
-    compileOnly 'io.swagger.core.v3:swagger-annotations:2.2.21'
-    compileOnly("io.javalin.community.openapi:javalin-openapi-plugin:6.6.0")
-    compileOnly("io.javalin.community.openapi:javalin-swagger-plugin:6.6.0")
-    compileOnly("com.github.ikeepcalm:catwalk:v.0.8")
-    compileOnly 'org.projectlombok:lombok:1.18.46'
+    compileOnly("io.papermc.paper:paper-api:26.3.build.+")
+    compileOnly("dev.ua.uaproject.catwalk:catwalk:0.9-SNAPSHOT")
+    compileOnly("io.javalin:javalin:7.2.3")
+    compileOnly("io.javalin.community.openapi:openapi-specification:7.2.3")
+    compileOnly("com.fasterxml.jackson.core:jackson-databind:2.22.4")
+    compileOnly("dev.ua.ikeepcalm:circle-of-imagination-api:1.5.2-SNAPSHOT")
 
-    annotationProcessor("io.javalin.community.openapi:openapi-annotation-processor:6.6.0")
-    annotationProcessor 'org.projectlombok:lombok:1.18.46'
-
-    implementation 'org.yaml:snakeyaml:2.2'
-    implementation 'com.google.code.gson:gson:2.10.1'
-    implementation 'com.github.ben-manes.caffeine:caffeine:3.1.8'
+    compileOnly("org.projectlombok:lombok:1.18.48")
+    annotationProcessor("org.projectlombok:lombok:1.18.48")
 }
 
-def targetJavaVersion = 25
 java {
-    def javaVersion = JavaVersion.toVersion(targetJavaVersion)
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-    if (JavaVersion.current() < javaVersion) {
-        toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
-    }
+    toolchain.languageVersion = JavaLanguageVersion.of(25)
 }
 
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
-
-    if (targetJavaVersion >= 10 || JavaVersion.current().isJava10Compatible()) {
-        options.release.set(targetJavaVersion)
-    }
+    options.release.set(25)
 }
 
 processResources {
@@ -61,4 +44,20 @@ processResources {
     filesMatching('plugin.yml') {
         expand props
     }
+}
+
+configurations {
+    testImplementation.extendsFrom compileOnly
+}
+
+dependencies {
+    testImplementation(platform("org.junit:junit-bom:6.1.3"))
+    testImplementation("org.junit.jupiter:junit-jupiter")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+}
+
+test {
+    useJUnitPlatform()
+    workingDir = layout.buildDirectory.dir("test-server").get().asFile
+    doFirst { workingDir.mkdirs() }
 }
