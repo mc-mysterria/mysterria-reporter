@@ -15,6 +15,17 @@ endpoints:
   bless: true
   rebirth: true
 
+backend:
+  enabled: false
+  dry-run: true
+  url: "https://api.mysterria.net"
+  key: ""
+  batch-size: 200
+
+profile:
+  scan-interval-minutes: 5
+  heartbeat-seconds: 60
+
 logging:
   debug-cache: false
   debug-refresh: false

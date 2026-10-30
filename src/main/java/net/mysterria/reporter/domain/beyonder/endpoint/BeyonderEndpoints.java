@@ -36,7 +36,7 @@ public class BeyonderEndpoints {
                     @OpenApiResponse(status = "200", description = "Raw YAML", content = @OpenApiContent(from = BeyonderFile.class)),
                     @OpenApiResponse(status = "404", description = "No data file for this player")
             })
-    @BridgeEventHandler(scopes = "reporter.read", logRequests = true)
+    @BridgeEventHandler(scopes = "reporter.beyonder", logRequests = true)
     public BridgeApiResponse<BeyonderFile> getBeyonderData(@BridgePathParam("player") String player) {
         if (!config.isEnabled("beyonder-data")) {
             return Responses.disabled();
@@ -58,7 +58,7 @@ public class BeyonderEndpoints {
                     @OpenApiResponse(status = "400", description = "Invalid player name or amount"),
                     @OpenApiResponse(status = "404", description = "No log for this player")
             })
-    @BridgeEventHandler(scopes = "reporter.read", logRequests = true)
+    @BridgeEventHandler(scopes = "reporter.logs", logRequests = true)
     public CompletableFuture<BridgeApiResponse<BeyonderLogs>> getBeyonderLogs(@BridgePathParam("player") String player,
                                                                               @BridgePathParam("amount") int amount) {
         if (!config.isEnabled("beyonder-logs")) {

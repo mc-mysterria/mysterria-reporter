@@ -6,6 +6,7 @@ authors: [ Mysterria ]
 description: "Automated report system for obtaining meta-data"
 website: "https://mysterria.net"
 depend: [ CatWalk, CircleOfImagination ]
+softdepend: [ Lands, MysterriaTitles, SuperVanish, PremiumVanish ]
 
 permissions:
   mysterriareporter.cache:

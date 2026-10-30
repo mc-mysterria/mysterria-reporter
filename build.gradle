@@ -14,6 +14,9 @@ repositories {
     maven {
         url = "https://nexus.mysterria.net/repository/plugin-public/"
     }
+    maven {
+        url = "https://repo.incredibleplugins.com/releases"
+    }
 }
 
 dependencies {
@@ -23,6 +26,7 @@ dependencies {
     compileOnly("io.javalin.community.openapi:openapi-specification:7.2.3")
     compileOnly("com.fasterxml.jackson.core:jackson-databind:2.22.4")
     compileOnly("dev.ua.ikeepcalm:circle-of-imagination-api:1.5.2-SNAPSHOT")
+    compileOnly("com.incredibleplugins:lands-api:7.27.1")
 
     compileOnly("org.projectlombok:lombok:1.18.48")
     annotationProcessor("org.projectlombok:lombok:1.18.48")

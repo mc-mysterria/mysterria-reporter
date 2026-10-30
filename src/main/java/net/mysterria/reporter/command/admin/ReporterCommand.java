@@ -10,6 +10,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.mysterria.reporter.MysterriaReporter;
 import net.mysterria.reporter.domain.pathway.service.PathwayService;
+import net.mysterria.reporter.domain.profile.service.ProfilePushService;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -29,6 +30,7 @@ public class ReporterCommand {
                                 .executes(this::clearAll)
                                 .then(Commands.argument("player", StringArgumentType.word()).executes(this::clearPlayer)))
                         .then(Commands.literal("stats").executes(this::stats))
+                        .then(Commands.literal("backfill").executes(this::backfill))
                         .build(),
                 "Manage the MysterriaReporter pathway cache",
                 List.of("mr", "pathwaycache")
@@ -39,7 +41,8 @@ public class ReporterCommand {
         CommandSender sender = context.getSource().getSender();
         sender.sendMessage(Component.text("/reporter refresh - rebuild the beyonder roster", NamedTextColor.YELLOW));
         sender.sendMessage(Component.text("/reporter clear [player] - drop cached pathways", NamedTextColor.YELLOW));
-        sender.sendMessage(Component.text("/reporter stats - cache sizes", NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("/reporter stats - cache sizes and profile push state", NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("/reporter backfill - resend every profile to the backend", NamedTextColor.YELLOW));
         return Command.SINGLE_SUCCESS;
     }
 
@@ -66,6 +69,26 @@ public class ReporterCommand {
         CommandSender sender = context.getSource().getSender();
         sender.sendMessage(Component.text("Cached players: " + pathways().cachedPlayers(), NamedTextColor.YELLOW));
         sender.sendMessage(Component.text("Beyonders in roster: " + pathways().rosterSize(), NamedTextColor.YELLOW));
+        ProfilePushService push = plugin.getProfilePushService();
+        if (push == null) {
+            sender.sendMessage(Component.text("Profile push: disabled in config", NamedTextColor.YELLOW));
+        } else {
+            sender.sendMessage(Component.text("Profile push for world " + plugin.getWorldUid() + ": " + push.pendingPlayers() + " players pending"
+                    + (push.isEpochClosed() ? ", epoch closed" : ""), NamedTextColor.YELLOW));
+        }
+        return Command.SINGLE_SUCCESS;
+    }
+
+    private int backfill(CommandContext<CommandSourceStack> context) {
+        CommandSender sender = context.getSource().getSender();
+        if (plugin.getProfileScanService() == null) {
+            sender.sendMessage(Component.text("Profile push is disabled in config.", NamedTextColor.RED));
+            return Command.SINGLE_SUCCESS;
+        }
+        plugin.getProfilePushService().reset();
+        plugin.getProfileScanService().reset();
+        plugin.getServer().getScheduler().runTaskAsynchronously(plugin, plugin.getProfileScanService()::scan);
+        sender.sendMessage(Component.text("Backfill started.", NamedTextColor.GREEN));
         return Command.SINGLE_SUCCESS;
     }
 

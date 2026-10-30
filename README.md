@@ -15,9 +15,9 @@ export, and admin bless/rebirth actions.
 |---|---|---|---|
 | GET | `/pathway/single/{player}` | `reporter.read` | `{playerName, beyonder, pathway, sequence, acting}`; `beyonder=false` when the player has no pathway |
 | GET | `/pathway/everyone` | `reporter.read` | `{amount, beyonder: [...], generatedAt}`; 503 while the first roster is still being built |
-| GET | `/beyonder/{player}` | `reporter.read` | `{player, data, found}`, `data` is the raw YAML; 404 when there is no file |
-| GET | `/beyonder/logs/{player}/{amount}` | `reporter.read` | `{player, requested, returned, logs, found}`; flushes the log first; `amount` 1-10000 |
-| GET | `/artifact/{id}` | `reporter.read` | `{artifactId, data, found}`; 404 when there is no file |
+| GET | `/beyonder/{player}` | `reporter.beyonder` | `{player, data, found}`, `data` is the raw YAML; 404 when there is no file |
+| GET | `/beyonder/logs/{player}/{amount}` | `reporter.logs` | `{player, requested, returned, logs, found}`; flushes the log first; `amount` 1-10000 |
+| GET | `/artifact/{id}` | `reporter.beyonder` | `{artifactId, data, found}`; 404 when there is no file |
 | GET | `/balance/report` | `reporter.read` | the latest balance export JSON; 404 when none exists |
 | POST | `/bless` | `reporter.admin` | `{playerName, uuid, pathway, sequence, spiritualityGranted, actingGranted}` |
 | POST | `/rebirth` | `reporter.admin` | the request back |

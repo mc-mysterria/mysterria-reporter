@@ -32,7 +32,7 @@ public class ReportEndpoints {
                     @OpenApiResponse(status = "200", description = "Raw YAML", content = @OpenApiContent(from = ArtifactFile.class)),
                     @OpenApiResponse(status = "404", description = "No artifact with this id")
             })
-    @BridgeEventHandler(scopes = "reporter.read", logRequests = true)
+    @BridgeEventHandler(scopes = "reporter.beyonder", logRequests = true)
     public BridgeApiResponse<ArtifactFile> getArtifactData(@BridgePathParam("id") String id) {
         if (!config.isEnabled("artifact")) {
             return Responses.disabled();
