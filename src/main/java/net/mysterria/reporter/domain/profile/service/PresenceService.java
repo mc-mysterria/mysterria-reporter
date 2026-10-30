@@ -41,7 +41,7 @@ public class PresenceService {
         List<Map<String, Object>> online = new ArrayList<>();
         for (Player player : plugin.getServer().getOnlinePlayers()) {
             push.offer(player.getUniqueId(), "granted_titles", grantedTitles(player));
-            if (landLookup != null) push.offer(player.getUniqueId(), "land", landLookup.landsOf(player));
+            if (landLookup != null) push.offer(player.getUniqueId(), "land", landLookup.landOf(player));
             if (isVanished(player)) continue;
             Map<String, Object> entry = new HashMap<>();
             entry.put("uuid", player.getUniqueId().toString());

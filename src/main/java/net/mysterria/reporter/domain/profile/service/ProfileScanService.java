@@ -184,6 +184,7 @@ public class ProfileScanService {
             order.put(UUID.fromString(member), Map.of(
                     "id", Objects.requireNonNullElse(text(yaml, "id"), ""),
                     "name", Objects.requireNonNullElse(text(yaml, "name"), ""),
+                    "level", (int) longOf(yaml, "level", 1),
                     "role", role));
         }
         return order;
@@ -207,8 +208,10 @@ public class ProfileScanService {
 
     private Map<UUID, Object> marks(Path file) {
         Map<?, ?> json = json(file);
-        Object start = section(section(yaml(MAP.resolve("config.yml")), "incursion"), "season").get("start");
+        Map<?, ?> seasonConfig = section(section(yaml(MAP.resolve("config.yml")), "incursion"), "season");
+        Object start = seasonConfig.get("start");
         String season = start == null ? "" : start.toString();
+        Map<?, ?> badges = section(seasonConfig, "badges");
         Map<?, ?> balances = json.get("players") instanceof Map<?, ?> map ? map : Map.of();
         Map<?, ?> earned = json.get("earned") instanceof Map<?, ?> map ? map : Map.of();
         Set<Object> holders = new HashSet<>(balances.keySet());
@@ -218,9 +221,18 @@ public class ProfileScanService {
             section.put(UUID.fromString(id.toString()), Map.of(
                     "balance", number(balances.get(id)),
                     "seasonEarned", number(earned.get(id)),
+                    "badge", badge(badges, number(earned.get(id))),
                     "season", season));
         }
         return section;
+    }
+
+    private static String badge(Map<?, ?> thresholds, double earned) {
+        return thresholds.entrySet().stream()
+                .filter(threshold -> threshold.getValue() instanceof Number needed && earned >= needed.doubleValue())
+                .max(Comparator.comparingDouble(threshold -> ((Number) threshold.getValue()).doubleValue()))
+                .map(threshold -> threshold.getKey().toString().toUpperCase(Locale.ROOT))
+                .orElse("NONE");
     }
 
     private void postIncursions(String source, Path file) {
