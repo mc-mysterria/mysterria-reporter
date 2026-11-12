@@ -6,6 +6,7 @@ import dev.ua.ikeepcalm.coi.api.model.BeyonderData;
 import dev.ua.ikeepcalm.coi.api.model.PathwayData;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import net.mysterria.reporter.domain.pathway.service.PathwayReader;
 import net.mysterria.reporter.domain.profile.model.source.PushOutcome;
 import net.mysterria.reporter.util.file.FileStamp;
 import net.mysterria.reporter.util.file.StableFiles;
@@ -98,15 +99,17 @@ public class ProfileScanService {
         String raw = text(yaml(file), "player-id");
         if (raw == null) return Map.of();
         UUID uuid = UUID.fromString(raw);
+        if (!coi.isBeyonder(uuid)) return Map.of();
         BeyonderData data = coi.getBeyonderData(uuid);
-        if (data == null) return Map.of();
-        return data.pathways().stream()
-                .min(Comparator.comparingInt(PathwayData::lowestSequenceLevel))
-                .<Map<UUID, Object>>map(primary -> Map.of(uuid, Map.of(
-                        "name", primary.name(),
-                        "sequence", primary.lowestSequenceLevel(),
-                        "acting", primary.getActingPercentage())))
-                .orElse(Map.of());
+        // A known beyonder without data is a failed read: throwing keeps the last parse and retries on the next scan
+        if (data == null || data.pathways() == null || data.pathways().isEmpty()) {
+            throw new IllegalStateException("CircleOfImagination returned no pathway data for beyonder " + uuid);
+        }
+        PathwayData main = PathwayReader.mainPathway(data.pathways(), name -> name != null && coi.isOuterPathway(name));
+        return Map.of(uuid, Map.of(
+                "name", main.name(),
+                "sequence", main.lowestSequenceLevel(),
+                "acting", main.getActingPercentage()));
     }
 
     private Map<UUID, Object> honorific(Path file) {

@@ -25,6 +25,7 @@ public class ReporterConfig {
     private final int backendBatchSize;
     private final int scanIntervalMinutes;
     private final int heartbeatSeconds;
+    private final int maxRosterDropPercent;
 
     public static ReporterConfig load(FileConfiguration config) {
         ConfigurationSection endpoints = config.getConfigurationSection("endpoints");
@@ -41,7 +42,8 @@ public class ReporterConfig {
                 config.getString("backend.key", ""),
                 config.getInt("backend.batch-size"),
                 config.getInt("profile.scan-interval-minutes"),
-                config.getInt("profile.heartbeat-seconds")
+                config.getInt("profile.heartbeat-seconds"),
+                config.getInt("cache.max-roster-drop", 15)
         );
     }
 

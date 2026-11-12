@@ -21,7 +21,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class ProfilePushServiceTest {
 
-    private static final ReporterConfig CONFIG = new ReporterConfig(0, 0, 0, false, false, Set.of(), true, false, "http://backend", "key", 200, 5, 60);
+    private static final ReporterConfig CONFIG = new ReporterConfig(0, 0, 0, false, false, Set.of(), true, false, "http://backend", "key", 200, 5, 60, 15);
     private static final UUID PLAYER = UUID.randomUUID();
 
     @Test

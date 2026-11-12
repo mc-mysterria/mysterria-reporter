@@ -4,6 +4,9 @@ cache:
   # minutes, 0 disables the background refresh
   refresh-interval: 15
   max-player-entries: 1000
+  # percent; a refresh whose roster shrinks more than this (beyond any drop in
+  # beyonders CoI knows about) is held back and the last good roster is served. 0 turns the check off
+  max-roster-drop: 15
 
 endpoints:
   player-pathway: true

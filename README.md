@@ -13,7 +13,7 @@ export, and admin bless/rebirth actions.
 
 | Method | Path | Scope | Returns |
 |---|---|---|---|
-| GET | `/pathway/single/{player}` | `reporter.read` | `{playerName, beyonder, pathway, sequence, acting}`; `beyonder=false` when the player has no pathway |
+| GET | `/pathway/single/{player}` | `reporter.read` | `{playerName, beyonder, pathway, sequence, acting, boons}`; `beyonder=false` when the player has no pathway; 503 when CoI cannot read a known beyonder and there is no earlier value |
 | GET | `/pathway/everyone` | `reporter.read` | `{amount, beyonder: [...], generatedAt}`; 503 while the first roster is still being built |
 | GET | `/beyonder/{player}` | `reporter.beyonder` | `{player, data, found}`, `data` is the raw YAML; 404 when there is no file |
 | GET | `/beyonder/logs/{player}/{amount}` | `reporter.logs` | `{player, requested, returned, logs, found}`; flushes the log first; `amount` 1-10000 |
@@ -26,6 +26,13 @@ The master CatWalk key passes every scope. Every response uses CatWalk's `{succe
 status carries the outcome: 400 invalid input, 404 missing data or endpoint disabled in `config.yml`, 409 bless of an
 existing Beyonder or rebirth of a non-Beyonder, 500 when CircleOfImagination refuses the change.
 
+`pathway` is the player's main Pathway (CoI keeps it first in the list), never a Boon. Boons are listed in `boons` as
+`{pathway, sequence}`. When CoI knows a player as a Beyonder but cannot read their data, the read is retried once on the
+server thread and then the last known value is used. A roster refresh that would shrink by more than
+`cache.max-roster-drop` percent, beyond any drop in Beyonders CoI knows about, is held back and the last good roster keeps
+being served. Every refresh logs one summary line (published, loaded, failed, kept from last time, dropped), also shown
+by `/reporter stats`.
+
 Bless and rebirth run on the server thread and answer with the real result. Bless validates the pathway against
 CircleOfImagination, the sequence (0-9) and the boosts (not negative; defaults 200 spirituality, 50 acting).
 
@@ -36,6 +43,7 @@ cache:
   player-ttl: 5          # minutes
   refresh-interval: 15   # minutes, 0 disables the background refresh
   max-player-entries: 1000
+  max-roster-drop: 15    # percent, 0 turns the shrink check off
 endpoints:               # false answers 404
   player-pathway: true
   everyone-pathway: true
@@ -52,7 +60,8 @@ logging:
 
 ## Commands
 
-`/reporter refresh | clear [player] | stats` (aliases `mr`, `pathwaycache`), permission `mysterriareporter.cache`.
+`/reporter refresh | clear [player] | stats` (aliases `mr`, `pathwaycache`), permission `mysterriareporter.cache`. `clear`
+also forgets the last good roster, so the next refresh publishes whatever it reads.
 
 ## Development
 

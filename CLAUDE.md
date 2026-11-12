@@ -12,6 +12,8 @@ documents every endpoint and the response contract.
 
 - `MysterriaReporter` wires everything; `config/ReporterConfig` is loaded once at startup.
 - `domain/pathway` - `PathwayService` caches single lookups (TTL map) and an async-refreshed roster of all beyonders.
+  `PathwayReader` reads one player (a failed read is never "not a beyonder"), `RosterRefresh` builds the roster and
+  holds back one that shrank.
 - `domain/beyonder` - bless/rebirth through the COI offline API, beyonder data files and activity logs.
 - `domain/report` - artifact files and the balance export.
 - `util/file/ServerFiles` reads only inside `plugins/CircleOfImagination`; validate names with `isSafeName` first.

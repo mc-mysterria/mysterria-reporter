@@ -24,12 +24,13 @@ public class PathwayEndpoints {
     private final ReporterConfig config;
 
     @OpenApi(path = "/pathway/single/{player}", methods = HttpMethod.GET, tags = "Reporter",
-            summary = "Get a player's primary pathway",
+            summary = "Get a player's main pathway",
             pathParams = @OpenApiParam(name = "player", description = "Player name"),
             responses = {
-                    @OpenApiResponse(status = "200", description = "Pathway, sequence and acting; beyonder=false when the player has none",
+                    @OpenApiResponse(status = "200", description = "Main pathway, sequence, acting and Boons; beyonder=false when the player has none",
                             content = @OpenApiContent(from = PlayerPathway.class)),
-                    @OpenApiResponse(status = "400", description = "Invalid player name")
+                    @OpenApiResponse(status = "400", description = "Invalid player name"),
+                    @OpenApiResponse(status = "503", description = "The player's data could not be read and there is no earlier value, retry shortly")
             })
     @BridgeEventHandler(scopes = "reporter.read", logRequests = true)
     public BridgeApiResponse<PlayerPathway> getPathway(@BridgePathParam("player") String player) {
@@ -39,11 +40,11 @@ public class PathwayEndpoints {
         if (!ServerFiles.isSafeName(player)) {
             return Responses.invalidName("player");
         }
-        return BridgeApiResponse.success(pathwayService.getPlayerPathway(player));
+        return Responses.of(() -> pathwayService.getPlayerPathway(player));
     }
 
     @OpenApi(path = "/pathway/everyone", methods = HttpMethod.GET, tags = "Reporter",
-            summary = "Get every beyonder's primary pathway",
+            summary = "Get every beyonder's main pathway",
             responses = {
                     @OpenApiResponse(status = "200", description = "All beyonders", content = @OpenApiContent(from = BeyonderRoster.class)),
                     @OpenApiResponse(status = "503", description = "The roster is still being built, retry shortly")
