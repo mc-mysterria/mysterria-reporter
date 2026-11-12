@@ -69,6 +69,7 @@ public class ReporterCommand {
         CommandSender sender = context.getSource().getSender();
         sender.sendMessage(Component.text("Cached players: " + pathways().cachedPlayers(), NamedTextColor.YELLOW));
         sender.sendMessage(Component.text("Beyonders in roster: " + pathways().rosterSize(), NamedTextColor.YELLOW));
+        sender.sendMessage(Component.text("Last roster refresh: " + pathways().lastRefreshSummary(), NamedTextColor.YELLOW));
         ProfilePushService push = plugin.getProfilePushService();
         if (push == null) {
             sender.sendMessage(Component.text("Profile push: disabled in config", NamedTextColor.YELLOW));
